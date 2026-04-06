@@ -1,32 +1,26 @@
 # हिंदी शब्द संग्रह | Hindi Words Collection
 
-A simple web application to display random Hindi words, compiled from various public datasets including OSCAR, MC4, FineWeb-2, CommonCrawl, Wikipedia, The Pile, and RedPajama.
+A simple web application to display random Hindi words, compiled from various public datasets including frequency word lists, Wikipedia, and other sources.
 
 ## Features
 
-- 🎲 **Random Word Display**: Click to get random Hindi words
-- 🔢 **Adjustable Count**: Choose how many words to display (1-100)
-- 🔀 **Shuffle**: Shuffle the current word set
-- 📊 **Word Statistics**: See total available words
-- 🌐 **GitHub Pages Ready**: Deploy directly from this folder
+- 🎲 **Random Word Display**: Generate random Hindi words with one click
+- 🔢 **Adjustable Count**: Choose how many words to display (1-1000)
+- 📋 **Copy to Clipboard**: One-click copy of comma-separated words
+- 🌐 **Modern Dark Theme**: Beautiful UI with gradient accents
+- 📱 **Responsive Design**: Works on desktop and mobile devices
+- ⚡ **Fast & Lightweight**: Pure HTML/CSS/JS, no dependencies
 
 ## Quick Start
 
 ### Option 1: Use Pre-compiled Words
-The `thraw/` folder already contains compiled Hindi words. Simply:
+The `thraw/thraw.txt` file already contains 21,909+ unique Hindi words. Simply:
 1. Open `index.html` in your browser, or
 2. Deploy this folder to GitHub Pages
 
 ### Option 2: Compile Your Own Words
 ```bash
-# Quick method using helper script
-./scripts/run_with_pyenv.sh python scripts/compile_hindi_words.py
-
-# Or use the advanced version
-./scripts/run_with_pyenv.sh python scripts/advanced_compile.py --sample-only
-
-# Manual activation
-source ~/PYENV/bin/activate
+# Compile words from sources
 python3 scripts/compile_hindi_words.py
 ```
 
@@ -36,29 +30,64 @@ python3 scripts/compile_hindi_words.py
 think_hindi/
 ├── index.html          # Main web page
 ├── app.js              # Application logic
-├── styles.css          # Styling
-├── thraw/              # Compiled Hindi word files
-│   ├── words_common.txt
-│   ├── words_literary.txt
-│   ├── words_technical.txt
-│   ├── words_scientific.txt
-│   └── words_news.txt
-└── scripts/            # Word compilation scripts
-    ├── compile_hindi_words.py
-    ├── advanced_compile.py
-    ├── requirements.txt
-    └── README.md
+├── styles.css          # Styling (dark theme with Syne + Noto Sans Devanagari fonts)
+├── thraw/              # Compiled Hindi word file
+│   └── thraw.txt       # Single file with all unique words (21,909+ words)
+├── scripts/            # Word compilation scripts
+│   ├── compile_hindi_words.py  # Main compilation script
+│   ├── advanced_compile.py     # Advanced compilation options
+│   ├── sources.txt             # List of data sources
+│   └── temp/                   # Temporary download folder (gitignored)
+└── .gitignore          # Git ignore rules
 ```
+
+## Data Sources
+
+Words are compiled from these public datasets:
+
+- **Frequency Words** - Hindi word frequency list with ~50,000 most common words
+- **Hindi Wikipedia** - Hindi language Wikipedia content
+- **HuggingFace Datasets** (for future expansion):
+  - OSCAR Corpus (`oscar-corpus/community-oscar`)
+  - MC4 (`mc4`)
+  - FineWeb-2 (`HuggingFaceFW/fineweb-2`)
+  - Wikipedia (`wikipedia`)
+  - RedPajama (`togethercomputer/RedPajama-Data-1T`)
+- **Other Sources**:
+  - CommonCrawl (`commoncrawl.org`)
+  - Wikimedia dumps (`dumps.wikimedia.org`)
+  - The Pile (`pile.eleuther.ai`)
+
+All source URLs are documented in `scripts/sources.txt`.
+
+## Design Decisions
+
+### Architecture
+- **Single File Approach**: All words consolidated into `thraw/thraw.txt` for simplicity
+- **Clean Scripts Folder**: Contains only Python scripts and sources.txt
+- **Temporary Downloads**: All downloads go to `scripts/temp/` (gitignored)
+- **Source References**: `sources.txt` documents all available data sources
+
+### UI/UX
+- **Dark Theme**: Modern dark background with gold accents for better readability
+- **Typography**: Syne font for UI, Noto Sans Devanagari for Hindi text
+- **Three Controls**: Count input, Generate button, Copy button (minimal interface)
+- **Horizontal Scrolling**: Words display in single row with horizontal scroll
+- **Visual Feedback**: Button states show success/error for copy operations
+
+### Data Processing
+- **Unique Words**: Compilation script removes duplicates automatically
+- **Sorted Output**: Words are sorted alphabetically in thraw.txt
+- **Progress Indicators**: Downloads show progress percentage
+- **Error Handling**: Failed downloads are logged but don't stop compilation
 
 ## Deployment to GitHub Pages
 
 1. **Push to GitHub**:
    ```bash
    git add .
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/think-hindi.git
-   git push -u origin main
+   git commit -m "Your commit message"
+   git push origin main
    ```
 
 2. **Enable GitHub Pages**:
@@ -69,48 +98,44 @@ think_hindi/
 
 3. **Access your site**:
    ```
-   https://YOUR_USERNAME.github.io/think-hindi/
+   https://YOUR_USERNAME.github.io/think_hindi/
    ```
-
-## Data Sources
-
-Words are compiled from these public datasets:
-
-- **OSCAR Corpus** - `oscar-corpus/community-oscar`
-- **MC4** - `mc4`
-- **FineWeb-2** - `HuggingFaceFW/fineweb-2`
-- **CommonCrawl** - `commoncrawl.org`
-- **Wikipedia** - `dumps.wikimedia.org` (Hindi)
-- **The Pile** - `pile.eleuther.ai`
-- **RedPajama** - `togethercomputer/RedPajama-Data-1T`
-
-See `scripts/README.md` for compilation details.
 
 ## Customization
 
-### Add More Words
-1. Edit word files in `thraw/` folder
-2. Or run compilation scripts with `--real-data` flag
-
 ### Adjust Word Display Limits
+Edit `index.html`:
+```html
+<input type="number" id="wordCount" min="1" max="1000" value="100">
+```
+
 Edit `app.js`:
 ```javascript
 // Change max word limit
-if (value > 100) this.wordCountInput.value = 100;
+if (value > 1000) this.wordCountInput.value = 1000;
 ```
 
-### Modify Categories
-Edit `scripts/compile_hindi_words.py` or `advanced_compile.py` to change word categorization logic.
+### Compile Additional Words
+1. Add new source URLs to `scripts/sources.txt`
+2. Run `python3 scripts/compile_hindi_words.py`
+3. Words will be added to `thraw/thraw.txt`
+
+### Modify Theme
+Edit `styles.css` to customize colors:
+```css
+:root {
+    --bg: #0c0c0f;          /* Background color */
+    --accent: #e8b86d;       /* Accent color (gold) */
+    --text: #f0ede8;         /* Text color */
+    /* ... more variables ... */
+}
+```
 
 ## Development
 
 ### Local Testing
 ```bash
-# Using the test script (recommended)
-./scripts/test_webapp.sh
-
-# Or manually with Python's built-in server
-source ~/PYENV/bin/activate
+# Using Python's built-in server
 python3 -m http.server 8000
 
 # Or using Node.js http-server
@@ -119,16 +144,27 @@ npx http-server
 
 Then open `http://localhost:8000`
 
-### Python Environment
-The project uses a virtual environment at `~/PYENV` with all required dependencies pre-installed.
+### Python Requirements
+No external dependencies required for basic functionality. The compilation script uses:
+- `requests` - for downloading word lists
+- `pathlib` - for file path operations
+- `re` - for text processing
 
-To activate: `source ~/PYENV/bin/activate`
-
-To install additional packages:
+To install dependencies:
 ```bash
-source ~/PYENV/bin/activate
-pip install <package-name>
+pip install requests
 ```
+
+## File Management
+
+### Adding Words
+1. Place word files in `thraw/` folder
+2. Or run compilation script to fetch from sources
+3. Words are automatically deduplicated and sorted
+
+### Cleaning Up
+- `scripts/temp/` - Contains temporary downloads (safe to delete)
+- Old `words_*.txt` files have been consolidated into `thraw.txt`
 
 ## Browser Compatibility
 
@@ -144,7 +180,7 @@ This project is open source and available under the MIT License.
 ## Contributing
 
 Contributions welcome! Feel free to:
-- Add more word categories
+- Add more word sources
 - Improve word compilation
 - Enhance the UI/UX
 - Fix bugs

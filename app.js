@@ -32,8 +32,8 @@ class HindiWordsApp {
 
     async loadAllWords() {
         try {
-            // Load words from the all words file
-            const response = await fetch('thraw/words_all.txt');
+            // Load words from the merged word file
+            const response = await fetch('thraw/thraw.txt');
 
             if (!response.ok) {
                 throw new Error('Failed to load words');

@@ -30,3 +30,6 @@ huggingface/
 
 # Logs
 *.log
+
+# Temporary downloads
+scripts/temp/
