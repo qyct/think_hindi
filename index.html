@@ -3,34 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>हिंदी शब्द संग्रह | Hindi Words Collection</title>
+    <title>हिंदी शब्द संग्रह</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>हिंदी शब्द संग्रह</h1>
-            <p class="subtitle">Hindi Words Collection</p>
+            <span class="subtitle">Word Collection</span>
         </header>
 
         <main>
             <div class="controls">
                 <div class="input-group">
-                    <label for="wordCount">Number of words:</label>
-                    <input type="number" id="wordCount" min="1" max="1000" value="10">
+                    <label for="wordCount">Count</label>
+                    <input type="number" id="wordCount" min="1" max="1000" value="100">
                 </div>
 
                 <button id="randomBtn" class="btn-primary">
-                    <span>🎲</span> Random Words
+                    <span>🎲</span> Generate
                 </button>
 
                 <button id="copyBtn" class="btn-secondary">
-                    <span>📋</span> Copy to Clipboard
+                    <span>📋</span> Copy
                 </button>
             </div>
 
             <div id="wordsContainer" class="words-container">
-                <div class="placeholder">Click "Random Words" to display Hindi words</div>
+                <div class="placeholder">Click Generate to display Hindi words</div>
             </div>
         </main>
     </div>
