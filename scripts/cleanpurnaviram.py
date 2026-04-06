@@ -6,7 +6,7 @@ Remove purna viram (।) character from words while keeping the words
 
 import re
 from pathlib import Path
-from word_utils import read_words, save_words, print_separator
+from wordutils import read_words, save_words, print_separator
 
 # Configuration
 THRAW_FILE = Path(__file__).parent.parent / "thraw" / "thraw.txt"

@@ -11,11 +11,11 @@ from pathlib import Path
 # Add scripts directory to path
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
 
-from word_utils import (
+from wordutils import (
     read_words, save_words, clean_words, remove_duplicates,
     check_purity, get_statistics, print_separator, print_stats
 )
-from fetchers import (
+from fetchwords import (
     fetch_frequency_words, fetch_wikipedia_articles, test_all_sources
 )
 

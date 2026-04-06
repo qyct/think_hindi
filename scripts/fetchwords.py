@@ -20,7 +20,7 @@ except ImportError:
     HAS_DATASETS = False
 
 # Import utilities
-from word_utils import (
+from wordutils import (
     is_pure_hindi, extract_hindi_words, TEMP_DIR,
     print_separator
 )

@@ -212,12 +212,25 @@ pip install requests
 pip install datasets huggingface_hub
 ```
 
+### Naming Conventions
+
+**Python Files:**
+- Use lowercase only (no underscores, no hyphens)
+- Examples: `wordutils.py`, `fetchwords.py`, `cleanpurnaviram.py`
+- Multi-word names are concatenated: `cleanpurnaviram.py` (not `clean_purna_viram.py`)
+
+**Rationale:**
+- Simpler imports: `from wordutils import` vs `from word_utils import`
+- Consistent, clean filenames
+- Easier to work with across different systems
+
 ### Project Architecture
 
 **Core Modules:**
 - `main.py` - CLI interface with argparse
-- `scripts/word_utils.py` - Word processing utilities
-- `scripts/fetchers.py` - Data fetching functions
+- `scripts/wordutils.py` - Word processing utilities
+- `scripts/fetchwords.py` - Data fetching functions
+- `scripts/cleanpurnaviram.py` - Purna viram removal script
 - `scripts/sources.json` - Source data with metadata
 
 **Key Functions:**
