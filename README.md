@@ -20,8 +20,11 @@ The `thraw/thraw.txt` file already contains 21,909+ unique Hindi words. Simply:
 
 ### Option 2: Compile Your Own Words
 ```bash
-# Compile words from sources
-python3 scripts/compile_hindi_words.py
+# Basic compilation (fast, ~22,000 words)
+~/PYENV/bin/python scripts/compile_hindi_words.py
+
+# Extended compilation (slower, more words)
+~/PYENV/bin/python scripts/fetch_all_sources.py
 ```
 
 ## Project Structure
@@ -32,10 +35,15 @@ think_hindi/
 ├── app.js              # Application logic
 ├── styles.css          # Styling (dark theme with Syne + Noto Sans Devanagari fonts)
 ├── thraw/              # Compiled Hindi word file
-│   └── thraw.txt       # Single file with all unique words (21,909+ words)
+│   └── thraw.txt       # Single file with all unique words (22,800+ words)
 ├── scripts/            # Word compilation scripts
 │   ├── compile_hindi_words.py  # Main compilation script
-│   ├── advanced_compile.py     # Advanced compilation options
+│   ├── fetch_huggingface.py    # HuggingFace datasets fetcher
+│   ├── fetch_wikipedia.py      # Extended Wikipedia fetcher
+│   ├── fetch_commoncrawl.py    # Indian web domains fetcher
+│   ├── fetch_pile.py           # The Pile dataset fetcher
+│   ├── fetch_all_sources.py    # Master script to run all fetchers
+│   ├── SCRIPTS_GUIDE.md        # Comprehensive scripts documentation
 │   ├── sources.txt             # List of data sources
 │   └── temp/                   # Temporary download folder (gitignored)
 └── .gitignore          # Git ignore rules
@@ -101,26 +109,95 @@ All source URLs are documented in `scripts/sources.txt`.
    https://YOUR_USERNAME.github.io/think_hindi/
    ```
 
+## Compilation Scripts
+
+### Quick Start
+```bash
+# Basic compilation (fast, ~22,000 words)
+~/PYENV/bin/python scripts/compile_hindi_words.py
+
+# Extended compilation (slower, more words from all sources)
+~/PYENV/bin/python scripts/fetch_all_sources.py
+```
+
+### Available Scripts
+
+**Main Compilation Script**
+- `compile_hindi_words.py` - Main script that compiles Hindi words from basic sources
+  - Fetches Hindi frequency words (~21,000 words)
+  - Downloads Wikipedia Hindi content
+  - Processes any files in temp/ directory
+  - Saves to `thraw/thraw.txt`
+
+**HuggingFace Datasets**
+- `fetch_huggingface.py` - Fetches from HuggingFace datasets
+  - OSCAR Corpus (Hindi)
+  - MC4 (Hindi)
+  - FineWeb-2 (Hindi samples)
+  - RedPajama-Data-1T (Hindi samples)
+
+**Wikipedia**
+- `fetch_wikipedia.py` - Extended Wikipedia fetcher
+  - Fetches random Wikipedia articles
+  - Fetches from specific categories
+  - Extracts Hindi words from article content
+
+**CommonCrawl / Indian Web**
+- `fetch_commoncrawl.py` - Fetches from Indian web domains
+  - Hindi news websites (BBC Hindi, OneIndia Hindi, Jagran)
+  - Government Hindi portals
+  - Educational websites
+
+**The Pile**
+- `fetch_pile.py` - Fetches from The Pile dataset
+  - Streams through The Pile dataset
+  - Finds Hindi language content
+  - Extracts unique Hindi words
+
+**Master Script**
+- `fetch_all_sources.py` - Runs all fetchers in sequence
+  - Executes all fetcher scripts
+  - Combines all results
+  - Saves to `thraw/thraw.txt`
+
+### Individual Fetcher Usage
+```bash
+# Fetch from HuggingFace datasets
+~/PYENV/bin/python scripts/fetch_huggingface.py
+
+# Fetch from Indian web
+~/PYENV/bin/python scripts/fetch_commoncrawl.py
+
+# Fetch from The Pile
+~/PYENV/bin/python scripts/fetch_pile.py
+```
+
+### Data Sources
+
+**Primary Sources (Currently Used)**
+1. **Frequency Words** - 21,275 words
+   - Hindi word frequency list
+
+2. **Hindi Wikipedia** - 1,144 words
+   - Encyclopedia content
+
+3. **Indian Web Domains** - 3,180 words
+   - BBC Hindi, OneIndia Hindi, Jagran, Government portals
+
+**Additional Sources (Available for Expansion)**
+- HuggingFace Datasets: OSCAR, MC4, FineWeb-2, RedPajama
+- The Pile: EleutherAI's mixed dataset
+- CommonCrawl: Web crawl data (requires WARC processing)
+- Wikipedia Dumps: Full Hindi Wikipedia dumps
+
 ## Customization
-
-### Adjust Word Display Limits
-Edit `index.html`:
-```html
-<input type="number" id="wordCount" min="1" max="1000" value="100">
-```
-
-Edit `app.js`:
-```javascript
-// Change max word limit
-if (value > 1000) this.wordCountInput.value = 1000;
-```
 
 ### Compile Additional Words
 1. Add new source URLs to `scripts/sources.txt`
-2. Run `python3 scripts/compile_hindi_words.py`
+2. Run `~/PYENV/bin/python scripts/compile_hindi_words.py`
 3. Words will be added to `thraw/thraw.txt`
 
-### Modify Theme
+### Adjust Word Display Limits
 Edit `styles.css` to customize colors:
 ```css
 :root {
