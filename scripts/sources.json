@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "last_updated": "2026-04-06",
+    "version": "2.0",
+    "description": "Hindi word sources with test results and scoring"
+  },
+  "scoring_criteria": {
+    "ease": {
+      "5": "Direct URL download, no dependencies",
+      "4": "Standard libraries only",
+      "3": "Requires web scraping/HTML parsing",
+      "2": "Requires external library installation",
+      "1": "Requires authentication/account"
+    },
+    "quality": {
+      "5": "100% pure Hindi, clean format",
+      "4": "Mostly Hindi, minimal filtering needed",
+      "3": "Mixed but usable with filtering",
+      "2": "Significant non-Hindi content",
+      "1": "Poor quality, extensive cleaning needed"
+    },
+    "quantity": {
+      "5": "100K+ words available",
+      "4": "50K-100K words",
+      "3": "10K-50K words",
+      "2": "1K-10K words",
+      "1": "< 1K words"
+    }
+  },
+  "legend": {
+    "ease": "How easy to download (1=hard, 5=very easy)",
+    "quality": "Purity of Hindi content (1=poor, 5=excellent)",
+    "quantity": "Number of words available (1=few, 5=millions)",
+    "total_score": "Total score (Ease + Quality + Quantity) = /15"
+  },
+  "sources": [
+    {
+      "id": 1,
+      "name": "Frequency Words (GitHub)",
+      "url": "https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/hi/hi_full.txt",
+      "description": "Hindi word frequency list with ~50K most common words",
+      "type": "Direct URL",
+      "ease": 5,
+      "quality": 5,
+      "quantity": 5,
+      "total_score": 15,
+      "sample_words": 1000,
+      "estimated_total": 50000,
+      "purity": 100.0,
+      "dependencies": "None (standard library only)",
+      "notes": "Perfect score! Clean frequency list format, direct download, no dependencies",
+      "status": "✅ RECOMMENDED #1",
+      "test_date": "2026-04-06 19:23:00"
+    },
+    {
+      "id": 2,
+      "name": "Hindi Wikipedia",
+      "url": "https://hi.wikipedia.org/",
+      "description": "Hindi language Wikipedia encyclopedia",
+      "type": "Web Scraping",
+      "ease": 3,
+      "quality": 4,
+      "quantity": 4,
+      "total_score": 11,
+      "sample_words": 5001,
+      "estimated_total": 100000,
+      "purity": 100.0,
+      "dependencies": "requests, urllib (standard libraries)",
+      "notes": "Clean encyclopedia content. Tested 3/3 articles successfully.",
+      "status": "✅ RECOMMENDED #2",
+      "test_date": "2026-04-06 19:23:08"
+    },
+    {
+      "id": 3,
+      "name": "OSCAR Corpus (HuggingFace)",
+      "url": "https://huggingface.co/datasets/oscar-corpus/community-oscar",
+      "description": "Unsupervised multilingual crawler",
+      "type": "HuggingFace Dataset",
+      "ease": 1,
+      "quality": 0,
+      "quantity": 5,
+      "total_score": 6,
+      "dependencies": "datasets, huggingface_hub, HF account + auth",
+      "notes": "GATED DATASET - Requires HuggingFace account and authentication. Too complex for quick use.",
+      "status": "⚠️ GATED - AUTH REQUIRED",
+      "test_date": "2026-04-06 19:23:09"
+    },
+    {
+      "id": 4,
+      "name": "MC4 Multilingual Corpus",
+      "url": "https://huggingface.co/datasets/mc4",
+      "description": "Massive multilingual C4 corpus",
+      "type": "HuggingFace Dataset",
+      "ease": 1,
+      "quality": 0,
+      "quantity": 0,
+      "total_score": 1,
+      "dependencies": "datasets (deprecated loading method)",
+      "notes": "❌ DEPRECATED - Dataset scripts no longer supported. Loading method changed.",
+      "status": "❌ DEPRECATED",
+      "test_date": "2026-04-06 19:23:09"
+    },
+    {
+      "id": 5,
+      "name": "CommonCrawl",
+      "url": "https://commoncrawl.org",
+      "description": "Web crawl data (WARC format)",
+      "type": "WARC Files",
+      "ease": 1,
+      "quality": 2,
+      "quantity": 5,
+      "total_score": 8,
+      "dependencies": "warcio, gzip, special processing tools",
+      "notes": "❌ TOO COMPLEX - Requires WARC file processing, parsing HTML, handling massive files (10GB+). Not practical for quick word collection.",
+      "status": "❌ NOT RECOMMENDED",
+      "test_date": "2026-04-06 19:23:09"
+    },
+    {
+      "id": 6,
+      "name": "Wikimedia Dumps (Hindi Wikipedia)",
+      "url": "https://dumps.wikimedia.org",
+      "description": "Complete Wikipedia database dumps",
+      "type": "Database Dump",
+      "ease": 2,
+      "quality": 4,
+      "quantity": 4,
+      "total_score": 10,
+      "dependencies": "XML parser, large storage (GBs), processing time",
+      "notes": "⚠️ COMPLEX - Requires downloading multi-GB XML dumps and parsing. Better to use web scraping for incremental updates.",
+      "status": "⚠️ ALTERNATIVE AVAILABLE",
+      "test_date": "2026-04-06 19:23:09"
+    },
+    {
+      "id": 7,
+      "name": "The Pile Dataset",
+      "url": "https://pile.eleuther.ai",
+      "description": "Large mixed dataset",
+      "type": "Mixed Dataset",
+      "ease": 1,
+      "quality": 2,
+      "quantity": 5,
+      "total_score": 8,
+      "dependencies": "datasets library, large storage",
+      "notes": "❌ TOO COMPLEX - Mixed dataset, Hindi content sparse. Requires streaming through 825GB+ data. Not efficient.",
+      "status": "❌ NOT RECOMMENDED",
+      "test_date": "2026-04-06 19:23:09"
+    },
+    {
+      "id": 8,
+      "name": "FineWeb-2",
+      "url": "https://huggingface.co/datasets/HuggingFaceFW/fineweb-2",
+      "description": "High-quality web dataset",
+      "type": "HuggingFace Dataset",
+      "ease": 2,
+      "quality": 0,
+      "quantity": 5,
+      "total_score": 7,
+      "dependencies": "datasets library",
+      "notes": "⚠️ UNTESTED - Quality of Hindi content uncertain. Requires filtering by language.",
+      "status": "⚠️ NEEDS TESTING",
+      "test_date": "2026-04-06 19:23:09"
+    },
+    {
+      "id": 9,
+      "name": "RedPajama-Data-1T",
+      "url": "https://huggingface.co/datasets/togethercomputer/RedPajama-Data-1T",
+      "description": "1T token dataset",
+      "type": "Large Dataset",
+      "ease": 1,
+      "quality": 2,
+      "quantity": 5,
+      "total_score": 8,
+      "dependencies": "datasets library, large storage, language filtering",
+      "notes": "❌ TOO COMPLEX - 1TB+ dataset, Hindi content sparse. Not practical for targeted word collection.",
+      "status": "❌ NOT RECOMMENDED",
+      "test_date": "2026-04-06 19:23:09"
+    }
+  ]
+}

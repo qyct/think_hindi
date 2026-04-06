@@ -1,6 +1,6 @@
 # हिंदी शब्द संग्रह | Hindi Words Collection
 
-A simple web application to display random Hindi words, compiled from various public datasets including frequency word lists, Wikipedia, and other sources.
+A simple web application to display random Hindi words, compiled from comprehensive testing and selection of the best Hindi word sources.
 
 ## Features
 
@@ -10,84 +10,262 @@ A simple web application to display random Hindi words, compiled from various pu
 - 🌐 **Modern Dark Theme**: Beautiful UI with gradient accents
 - 📱 **Responsive Design**: Works on desktop and mobile devices
 - ⚡ **Fast & Lightweight**: Pure HTML/CSS/JS, no dependencies
+- 📊 **Comprehensive Collection**: 48,814+ unique Hindi words from tested sources
+- 🛠️ **CLI Tool**: Easy command-line interface for word collection management
 
 ## Quick Start
 
 ### Option 1: Use Pre-compiled Words
-The `thraw/thraw.txt` file already contains 21,909+ unique Hindi words. Simply:
+The `thraw/thraw.txt` file contains **48,814** unique Hindi words. Simply:
 1. Open `index.html` in your browser, or
 2. Deploy this folder to GitHub Pages
 
-### Option 2: Compile Your Own Words
+### Option 2: Use CLI Tool
 ```bash
-# Basic compilation (fast, ~22,000 words)
-~/PYENV/bin/python scripts/compile_hindi_words.py
+# Show statistics
+python main.py stats
 
-# Extended compilation (slower, more words)
-~/PYENV/bin/python scripts/fetch_all_sources.py
+# Expand word collection
+python main.py expand
 ```
 
 ## Project Structure
 
 ```
 think_hindi/
-├── index.html          # Main web page
-├── app.js              # Application logic
-├── styles.css          # Styling (dark theme with Syne + Noto Sans Devanagari fonts)
-├── thraw/              # Compiled Hindi word file
-│   └── thraw.txt       # Single file with all unique words (22,800+ words)
-├── scripts/            # Word compilation scripts
-│   ├── compile_hindi_words.py  # Main compilation script
-│   ├── fetch_huggingface.py    # HuggingFace datasets fetcher
-│   ├── fetch_wikipedia.py      # Extended Wikipedia fetcher
-│   ├── fetch_commoncrawl.py    # Indian web domains fetcher
-│   ├── fetch_pile.py           # The Pile dataset fetcher
-│   ├── fetch_all_sources.py    # Master script to run all fetchers
-│   ├── SCRIPTS_GUIDE.md        # Comprehensive scripts documentation
-│   ├── sources.txt             # List of data sources
-│   └── temp/                   # Temporary download folder (gitignored)
-└── .gitignore          # Git ignore rules
+├── main.py                  # CLI tool (main interface)
+├── index.html               # Main web page
+├── app.js                   # Application logic
+├── styles.css               # Styling (dark theme)
+├── thraw/                   # Compiled Hindi word file
+│   └── thraw.txt            # 48,814 unique Hindi words
+├── scripts/                 # Core utilities
+│   ├── word_utils.py        # Word processing utilities
+│   ├── fetchers.py          # Data fetching functions
+│   ├── sources.json         # Source data with metadata
+│   ├── advanced_compile.py  # Advanced compilation (reference)
+│   └── temp/                # Temporary downloads (gitignored)
+└── .gitignore               # Git ignore rules
+```
+
+## CLI Usage
+
+The `main.py` CLI tool provides all functionality for managing the Hindi word collection.
+
+### Basic Commands
+
+```bash
+# Show statistics
+python main.py stats
+
+# Check word purity
+python main.py check-purity
+
+# Check purity with verbose output
+python main.py check-purity --verbose
+```
+
+### Word Management
+
+```bash
+# Remove non-Hindi words
+python main.py clean
+
+# Remove duplicate words
+python main.py deduplicate
+
+# Basic compilation from Frequency Words + Wikipedia sample
+python main.py compile
+
+# Accumulate from 2 best sources (adds to existing)
+python main.py accumulate
+
+# Extended Wikipedia fetch (144 articles)
+python main.py expand
+```
+
+### Testing
+
+```bash
+# Test word sources (quick test)
+python main.py test-sources
+
+# Test sources with full analysis
+python main.py test-sources --full
+
+# Fetch from all sources
+python main.py fetch-all
+```
+
+### Global Flags
+
+```bash
+# Dry run (preview changes without saving)
+python main.py --dry-run clean
+
+# Skip confirmation prompts
+python main.py --yes expand
+
+# Verbose output
+python main.py --verbose check-purity
+
+# Combine flags
+python main.py --dry-run --yes clean
+```
+
+### Examples
+
+```bash
+# Check current status
+python main.py stats
+
+# Clean and verify
+python main.py --yes clean && python main.py check-purity
+
+# Expand collection (takes several minutes)
+python main.py --yes expand
+
+# Test before expanding
+python main.py test-sources && python main.py expand
 ```
 
 ## Data Sources
 
-Words are compiled from these public datasets:
+### 🏆 Top 2 Recommended Sources (Tested & Selected)
 
-- **Frequency Words** - Hindi word frequency list with ~50,000 most common words
-- **Hindi Wikipedia** - Hindi language Wikipedia content
-- **HuggingFace Datasets** (for future expansion):
-  - OSCAR Corpus (`oscar-corpus/community-oscar`)
-  - MC4 (`mc4`)
-  - FineWeb-2 (`HuggingFaceFW/fineweb-2`)
-  - Wikipedia (`wikipedia`)
-  - RedPajama (`togethercomputer/RedPajama-Data-1T`)
-- **Other Sources**:
-  - CommonCrawl (`commoncrawl.org`)
-  - Wikimedia dumps (`dumps.wikimedia.org`)
-  - The Pile (`pile.eleuther.ai`)
+**#1. Frequency Words (GitHub) - Score: 15/15**
+- **Ease**: 5/5 - Direct URL download, no dependencies
+- **Quality**: 5/5 - 100% pure Hindi, clean frequency list format
+- **Quantity**: 5/5 - ~50,000 words
+- **URL**: https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/hi/hi_full.txt
+- **Status**: ✅ USED - Primary source for common Hindi words
 
-All source URLs are documented in `scripts/sources.txt`.
+**#2. Hindi Wikipedia - Score: 11/15**
+- **Ease**: 3/5 - Web scraping with standard libraries
+- **Quality**: 4/5 - Clean encyclopedia content
+- **Quantity**: 4/5 - ~100,000+ words available
+- **URL**: https://hi.wikipedia.org/
+- **Status**: ✅ USED - Fetched 144 articles for diverse vocabulary
 
-## Design Decisions
+### Other Sources Tested
 
-### Architecture
-- **Single File Approach**: All words consolidated into `thraw/thraw.txt` for simplicity
-- **Clean Scripts Folder**: Contains only Python scripts and sources.txt
-- **Temporary Downloads**: All downloads go to `scripts/temp/` (gitignored)
-- **Source References**: `sources.txt` documents all available data sources
+| Source | Score | Status | Notes |
+|--------|-------|--------|-------|
+| Wikimedia Dumps | 10/15 | ⚠️ Complex | Use web scraping instead |
+| CommonCrawl | 8/15 | ❌ Not Rec. | WARC processing required |
+| The Pile | 8/15 | ❌ Not Rec. | 825GB+, Hindi sparse |
+| RedPajama | 8/15 | ❌ Not Rec. | 1TB+, not practical |
+| FineWeb-2 | 7/15 | ⚠️ Untested | Hindi quality uncertain |
+| OSCAR | 6/15 | ⚠️ Gated | Requires HF auth |
+| MC4 | 1/15 | ❌ Deprecated | Scripts no longer supported |
 
-### UI/UX
-- **Dark Theme**: Modern dark background with gold accents for better readability
-- **Typography**: Syne font for UI, Noto Sans Devanagari for Hindi text
-- **Three Controls**: Count input, Generate button, Copy button (minimal interface)
-- **Horizontal Scrolling**: Words display in single row with horizontal scroll
-- **Visual Feedback**: Button states show success/error for copy operations
+**See `scripts/sources.json` for detailed test results and scoring criteria.**
 
-### Data Processing
-- **Unique Words**: Compilation script removes duplicates automatically
-- **Sorted Output**: Words are sorted alphabetically in thraw.txt
-- **Progress Indicators**: Downloads show progress percentage
-- **Error Handling**: Failed downloads are logged but don't stop compilation
+## Word Collection Process
+
+### Phase 1: Source Testing
+1. Tested 9 different Hindi word sources
+2. Rated each on Ease (1-5), Quality (1-5), Quantity (1-5)
+3. Selected top 2 sources based on total score
+4. Documented results in `scripts/sources.json`
+
+### Phase 2: Data Collection
+1. **Frequency Words**: Downloaded complete dataset (~21K lines → 20K words)
+2. **Wikipedia**: Fetched 144 articles covering:
+   - Indian states & cities (25 articles)
+   - Academic subjects (13 articles)
+   - Culture & Arts (6 articles)
+   - Religion & Spirituality (8 articles)
+   - Nature & Environment (7 articles)
+   - Technology & Modern topics (8 articles)
+   - Sports (6 articles)
+   - Food & Health (7 articles)
+   - Education (5 articles)
+   - Society & Family (5 articles)
+   - Language & Literature (7 articles)
+   - Important figures (5 articles)
+   - Science & Discovery (6 articles)
+   - Economy & Industry (6 articles)
+   - Infrastructure (8 articles)
+   - Miscellaneous topics (15 articles)
+
+### Phase 3: Data Cleaning
+1. Removed all non-Hindi characters
+2. Filtered to pure Devanagari script (U+0900-U+097F)
+3. Removed duplicates
+4. Sorted alphabetically
+
+### Final Statistics
+- **Starting words**: 21,431 (cleaned from original mixed content)
+- **Frequency Words added**: 20,041 (0 new - already covered)
+- **Wikipedia added**: 37,798 words (23,668 new)
+- **Final count**: **48,814 unique Hindi words**
+
+## Development
+
+### Python Requirements
+
+For CLI functionality:
+```bash
+pip install requests
+# Optional: for HuggingFace datasets
+pip install datasets huggingface_hub
+```
+
+### Project Architecture
+
+**Core Modules:**
+- `main.py` - CLI interface with argparse
+- `scripts/word_utils.py` - Word processing utilities
+- `scripts/fetchers.py` - Data fetching functions
+- `scripts/sources.json` - Source data with metadata
+
+**Key Functions:**
+- `is_pure_hindi()` - Check Devanagari script
+- `extract_hindi_words()` - Extract from text
+- `read_words()` / `save_words()` - File I/O
+- `clean_words()` - Remove non-Hindi
+- `remove_duplicates()` - Deduplication
+- `check_purity()` - Purity verification
+- `fetch_frequency_words()` - GitHub fetcher
+- `fetch_wikipedia_articles()` - Wikipedia fetcher
+
+### Adding New Commands
+
+To add a new CLI command:
+
+1. Add function to `main.py`:
+```python
+def cmd_myfunction(args):
+    """My function description"""
+    # Your code here
+    pass
+```
+
+2. Register in `commands` dictionary:
+```python
+commands = {
+    # ... existing commands
+    'myfunction': cmd_myfunction,
+}
+```
+
+3. Add subparser:
+```python
+subparsers.add_parser('myfunction', help='My function help')
+```
+
+### Testing
+
+```bash
+# Test individual components
+python -m pytest tests/  # (if tests exist)
+
+# Manual testing
+python main.py stats
+python main.py check-purity --verbose
+python main.py --dry-run clean
+```
 
 ## Deployment to GitHub Pages
 
@@ -109,140 +287,6 @@ All source URLs are documented in `scripts/sources.txt`.
    https://YOUR_USERNAME.github.io/think_hindi/
    ```
 
-## Compilation Scripts
-
-### Quick Start
-```bash
-# Basic compilation (fast, ~22,000 words)
-~/PYENV/bin/python scripts/compile_hindi_words.py
-
-# Extended compilation (slower, more words from all sources)
-~/PYENV/bin/python scripts/fetch_all_sources.py
-```
-
-### Available Scripts
-
-**Main Compilation Script**
-- `compile_hindi_words.py` - Main script that compiles Hindi words from basic sources
-  - Fetches Hindi frequency words (~21,000 words)
-  - Downloads Wikipedia Hindi content
-  - Processes any files in temp/ directory
-  - Saves to `thraw/thraw.txt`
-
-**HuggingFace Datasets**
-- `fetch_huggingface.py` - Fetches from HuggingFace datasets
-  - OSCAR Corpus (Hindi)
-  - MC4 (Hindi)
-  - FineWeb-2 (Hindi samples)
-  - RedPajama-Data-1T (Hindi samples)
-
-**Wikipedia**
-- `fetch_wikipedia.py` - Extended Wikipedia fetcher
-  - Fetches random Wikipedia articles
-  - Fetches from specific categories
-  - Extracts Hindi words from article content
-
-**CommonCrawl / Indian Web**
-- `fetch_commoncrawl.py` - Fetches from Indian web domains
-  - Hindi news websites (BBC Hindi, OneIndia Hindi, Jagran)
-  - Government Hindi portals
-  - Educational websites
-
-**The Pile**
-- `fetch_pile.py` - Fetches from The Pile dataset
-  - Streams through The Pile dataset
-  - Finds Hindi language content
-  - Extracts unique Hindi words
-
-**Master Script**
-- `fetch_all_sources.py` - Runs all fetchers in sequence
-  - Executes all fetcher scripts
-  - Combines all results
-  - Saves to `thraw/thraw.txt`
-
-### Individual Fetcher Usage
-```bash
-# Fetch from HuggingFace datasets
-~/PYENV/bin/python scripts/fetch_huggingface.py
-
-# Fetch from Indian web
-~/PYENV/bin/python scripts/fetch_commoncrawl.py
-
-# Fetch from The Pile
-~/PYENV/bin/python scripts/fetch_pile.py
-```
-
-### Data Sources
-
-**Primary Sources (Currently Used)**
-1. **Frequency Words** - 21,275 words
-   - Hindi word frequency list
-
-2. **Hindi Wikipedia** - 1,144 words
-   - Encyclopedia content
-
-3. **Indian Web Domains** - 3,180 words
-   - BBC Hindi, OneIndia Hindi, Jagran, Government portals
-
-**Additional Sources (Available for Expansion)**
-- HuggingFace Datasets: OSCAR, MC4, FineWeb-2, RedPajama
-- The Pile: EleutherAI's mixed dataset
-- CommonCrawl: Web crawl data (requires WARC processing)
-- Wikipedia Dumps: Full Hindi Wikipedia dumps
-
-## Customization
-
-### Compile Additional Words
-1. Add new source URLs to `scripts/sources.txt`
-2. Run `~/PYENV/bin/python scripts/compile_hindi_words.py`
-3. Words will be added to `thraw/thraw.txt`
-
-### Adjust Word Display Limits
-Edit `styles.css` to customize colors:
-```css
-:root {
-    --bg: #0c0c0f;          /* Background color */
-    --accent: #e8b86d;       /* Accent color (gold) */
-    --text: #f0ede8;         /* Text color */
-    /* ... more variables ... */
-}
-```
-
-## Development
-
-### Local Testing
-```bash
-# Using Python's built-in server
-python3 -m http.server 8000
-
-# Or using Node.js http-server
-npx http-server
-```
-
-Then open `http://localhost:8000`
-
-### Python Requirements
-No external dependencies required for basic functionality. The compilation script uses:
-- `requests` - for downloading word lists
-- `pathlib` - for file path operations
-- `re` - for text processing
-
-To install dependencies:
-```bash
-pip install requests
-```
-
-## File Management
-
-### Adding Words
-1. Place word files in `thraw/` folder
-2. Or run compilation script to fetch from sources
-3. Words are automatically deduplicated and sorted
-
-### Cleaning Up
-- `scripts/temp/` - Contains temporary downloads (safe to delete)
-- Old `words_*.txt` files have been consolidated into `thraw.txt`
-
 ## Browser Compatibility
 
 Works in all modern browsers:
@@ -250,19 +294,95 @@ Works in all modern browsers:
 - Firefox 88+
 - Safari 14+
 
+## File Management
+
+### Adding Words
+```bash
+# Using CLI
+python main.py expand
+
+# Or manually edit thraw/thraw.txt
+# (one word per line, UTF-8 encoding)
+```
+
+### Cleaning Up
+```bash
+# Remove non-Hindi words
+python main.py clean
+
+# Remove duplicates
+python main.py deduplicate
+
+# Check purity
+python main.py check-purity
+```
+
+### Backup
+```bash
+# Backup current collection
+cp thraw/thraw.txt thraw/thraw.txt.backup
+
+# Restore backup
+cp thraw/thraw.txt.backup thraw/thraw.txt
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Q: CLI not working?**
+```bash
+# Make sure you're using the correct Python
+~/PYENV/bin/python main.py stats
+
+# Or add to PATH
+export PATH="$HOME/PYENV/bin:$PATH"
+python main.py stats
+```
+
+**Q: Words not displaying in web app?**
+- Check `thraw/thraw.txt` exists and has content
+- Verify browser console for errors
+- Ensure UTF-8 encoding
+
+**Q: Fetching sources fails?**
+- Check internet connection
+- Some sources may require authentication (OSCAR)
+- Wikipedia may rate-limit (delays built in)
+
+### Getting Help
+
+```bash
+# General help
+python main.py --help
+
+# Command-specific help
+python main.py expand --help
+```
+
 ## License
 
 This project is open source and available under the MIT License.
 
 ## Contributing
 
-Contributions welcome! Feel free to:
-- Add more word sources
-- Improve word compilation
-- Enhance the UI/UX
-- Fix bugs
-- Add new features
+Contributions welcome! Focus areas:
+- Add new word sources (update `sources.json`)
+- Improve word collection algorithms
+- Enhance CLI functionality
+- Add web app features
+- Improve documentation
+
+## Credits
+
+- **Frequency Words Dataset**: [hermitdave/FrequencyWords](https://github.com/hermitdave/FrequencyWords)
+- **Hindi Wikipedia**: [hi.wikipedia.org](https://hi.wikipedia.org/)
+- **CLI Framework**: Built with argparse
 
 ---
 
 Made with ❤️ for Hindi language learners and enthusiasts
+
+**Last Updated**: 2026-04-06
+**Word Count**: 48,814 unique Hindi words
+**CLI Version**: 2.0
