@@ -240,6 +240,53 @@ button span { font-size: 0.9rem; }
 .words-container::-webkit-scrollbar-thumb { background: rgba(232,184,109,0.35); border-radius: 2px; }
 .words-container::-webkit-scrollbar-thumb:hover { background: rgba(232,184,109,0.6); }
 
+/* Prompt Section */
+.prompt-section {
+    margin-top: 16px;
+}
+
+.prompt-section label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+#promptText {
+    width: 100%;
+    min-height: 180px;
+    max-height: 300px;
+    padding: 12px;
+    font-family: 'Noto Sans Devanagari', 'Syne', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#promptText:focus {
+    border-color: rgba(232,184,109,0.3);
+}
+
+#promptText::placeholder {
+    color: var(--muted);
+    font-style: italic;
+}
+
+/* Prompt textarea scrollbar */
+#promptText::-webkit-scrollbar { width: 6px; }
+#promptText::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 3px; }
+#promptText::-webkit-scrollbar-thumb { background: rgba(232,184,109,0.3); border-radius: 3px; }
+#promptText::-webkit-scrollbar-thumb:hover { background: rgba(232,184,109,0.5); }
+
 @media (max-width: 480px) {
     .container { padding: 18px; }
     header h1 { font-size: 1.3rem; }
