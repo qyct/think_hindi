@@ -1,0 +1,16 @@
+# Hindi Words Data Sources
+
+## Primary Sources
+1. Frequency Words Dataset
+   URL: https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/hi/hi_full.txt
+   Description: Hindi word frequency list with ~50,000 most common words
+
+2. Hindi Wikipedia
+   URL: https://hi.wikipedia.org/
+   Description: Hindi language Wikipedia articles
+
+## Additional Sources (for future expansion)
+- OSCAR Corpus: HuggingFace dataset
+- MC4: Multilingual C4 corpus
+- FineWeb-2: HuggingFaceFW/fineweb-2
+- CommonCrawl: Web crawl data
