@@ -128,7 +128,7 @@ class HindiWordsApp {
         const wordList = words.join(', ');
         return `${wordList}
 
-Using only these words, create meaningful sentences in Hindi that help me understand their usage in everyday conversation. Explain the meaning of each sentence in English, highlight grammar points, and suggest alternative ways to use these words naturally. Make it engaging, beginner-friendly, and progressively build complexity so I can practice speaking, reading, and writing Hindi.`;
+Using these words, create meaningful paragraphs in Hindi with around 30 words, each can have multiple sentences, that help understand their usage in everyday conversations. Explain the meaning of each sentence of paragraphs in English, highlight grammar points, and suggest alternative ways to use these words naturally. Make it engaging so that one can practice speaking, reading, and writing Hindi.`;
     }
 
     renderWords() {
