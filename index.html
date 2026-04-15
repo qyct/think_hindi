@@ -499,6 +499,7 @@ class HindiWordsApp {
     async init() {
         this.cacheDOM();
         this.bindEvents();
+        this.loadSettings();
         await this.loadAllWords();
     }
 
@@ -527,13 +528,29 @@ class HindiWordsApp {
         });
         document.getElementById('twUp').addEventListener('click', async () => {
             this.totalWordsInput.value = Math.min(+this.totalWordsInput.value + 500, 30000);
+            this.saveSettings();
             await this.loadAllWords();
         });
         document.getElementById('twDown').addEventListener('click', async () => {
             this.totalWordsInput.value = Math.max(+this.totalWordsInput.value - 500, 500);
+            this.saveSettings();
             await this.loadAllWords();
         });
-        this.totalWordsInput.addEventListener('change', () => this.loadAllWords());
+        this.totalWordsInput.addEventListener('change', () => {
+            this.saveSettings();
+            this.loadAllWords();
+        });
+    }
+
+    loadSettings() {
+        const saved = localStorage.getItem('totalWords');
+        if (saved) {
+            this.totalWordsInput.value = saved;
+        }
+    }
+
+    saveSettings() {
+        localStorage.setItem('totalWords', this.totalWordsInput.value);
     }
 
     async loadAllWords() {
@@ -554,10 +571,29 @@ class HindiWordsApp {
     }
 
     async fetchWords(url) {
+        const filename = url.split('/').pop();
+
+        // Check localStorage first
+        const cached = localStorage.getItem(filename);
+        if (cached) {
+            return JSON.parse(cached);
+        }
+
+        // Fetch from URL
         const res = await fetch(url);
         if (!res.ok) throw new Error('fetch failed');
         const text = await res.text();
-        return text.split('\n').filter(l => l.trim()).map(l => l.split(',')[0].trim()).filter(Boolean);
+        const words = text.split('\n').filter(l => l.trim()).map(l => l.split(',')[0].trim()).filter(Boolean);
+
+        // Save to localStorage
+        try {
+            localStorage.setItem(filename, JSON.stringify(words));
+        } catch (e) {
+            // Quota exceeded or other storage error - silently fail
+            console.warn('Could not cache words to localStorage:', e);
+        }
+
+        return words;
     }
 
     displayRandomWords() {
