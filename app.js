@@ -13,74 +13,71 @@ class HindiWordsApp {
 
     cacheDOM() {
         this.wordCountInput = document.getElementById('wordCount');
+        this.totalWordsInput = document.getElementById('totalWords');
         this.randomBtn = document.getElementById('randomBtn');
         this.copyBtn = document.getElementById('copyBtn');
         this.copyPromptBtn = document.getElementById('copyPromptBtn');
         this.wordsContainer = document.getElementById('wordsContainer');
         this.promptText = document.getElementById('promptText');
         this.wordCountBadge = document.getElementById('wordCountBadge');
-        this.combineLevelsCheckbox = document.getElementById('combineLevels');
-        this.levelCheckboxes = document.querySelectorAll('.level-checkbox input');
     }
 
     bindEvents() {
         this.randomBtn.addEventListener('click', () => this.displayRandomWords());
         this.copyBtn.addEventListener('click', () => this.copyToClipboard());
         this.copyPromptBtn.addEventListener('click', () => this.copyPromptToClipboard());
-        this.wordCountInput.addEventListener('change', () => this.validateInput());
-
-        // Reload words when level selection changes
-        this.levelCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => this.loadAllWords());
-        });
-        this.combineLevelsCheckbox.addEventListener('change', () => this.loadAllWords());
+        this.wordCountInput.addEventListener('change', () => this.validateWordCount());
+        this.totalWordsInput.addEventListener('change', () => this.validateTotalWords());
     }
 
-    validateInput() {
+    validateWordCount() {
         let value = parseInt(this.wordCountInput.value);
-        if (value < 1) this.wordCountInput.value = 1;
-        if (value > 100) this.wordCountInput.value = 100;
+        const totalWords = parseInt(this.totalWordsInput.value);
+        if (isNaN(value) || value < 1) this.wordCountInput.value = 1;
+        if (value > totalWords) this.wordCountInput.value = totalWords;
+    }
+
+    validateTotalWords() {
+        let value = parseInt(this.totalWordsInput.value);
+        if (isNaN(value) || value < 500) this.totalWordsInput.value = 500;
+        if (value > 30000) this.totalWordsInput.value = 30000;
+        // Reload words when total words changes
+        this.loadAllWords();
     }
 
     async loadAllWords() {
         try {
-            const selectedLevels = Array.from(this.levelCheckboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
+            const totalWordsRequested = parseInt(this.totalWordsInput.value) || 3000;
 
-            if (selectedLevels.length === 0) {
-                this.allWords = [];
-                this.updateWordCountBadge();
-                console.log('No levels selected');
-                return;
-            }
-
-            const combineLevels = this.combineLevelsCheckbox.checked;
+            // Calculate how many files to load (each has 3000 words)
+            const filesNeeded = Math.ceil(totalWordsRequested / 3000);
             let allLoadedWords = [];
 
-            // Load words from each selected level
-            for (const level of selectedLevels) {
-                const url = `https://qyct.github.io/freq-hindi/words/hw${level}.txt`;
-                const words = await this.fetchLevelWords(url, level, combineLevels ? null : selectedLevels.indexOf(level));
+            // Load files sequentially
+            for (let i = 1; i <= filesNeeded; i++) {
+                const fileNum = i.toString().padStart(2, '0');
+                const url = `https://qyct.github.io/freq-hindi/words/hw${fileNum}.txt`;
+                const words = await this.fetchLevelWords(url);
                 allLoadedWords = allLoadedWords.concat(words);
             }
 
-            this.allWords = allLoadedWords;
+            // Slice to the exact number requested
+            this.allWords = allLoadedWords.slice(0, totalWordsRequested);
             this.updateWordCountBadge();
 
-            console.log(`Loaded ${this.allWords.length} Hindi words from ${selectedLevels.length} level(s)`);
+            console.log(`Loaded ${this.allWords.length} Hindi words from ${filesNeeded} file(s)`);
         } catch (error) {
             console.error('Error loading words:', error);
             this.wordsContainer.innerHTML = '<div class="error-msg">Failed to load words. Please refresh the page.</div>';
         }
     }
 
-    async fetchLevelWords(url, level, levelIndex) {
+    async fetchLevelWords(url) {
         try {
             const response = await fetch(url);
 
             if (!response.ok) {
-                throw new Error(`Failed to load level ${level}`);
+                throw new Error(`Failed to load words`);
             }
 
             const text = await response.text();
@@ -92,14 +89,9 @@ class HindiWordsApp {
                 return parts[0].trim();
             }).filter(word => word.length > 0);
 
-            // Level 01: only first 1000 words (unless combining)
-            if (level === '01' && levelIndex === 0) {
-                return wordsWithFreq.slice(0, 1000);
-            }
-
             return wordsWithFreq;
         } catch (error) {
-            console.error(`Error fetching level ${level}:`, error);
+            console.error(`Error fetching words:`, error);
             return [];
         }
     }
