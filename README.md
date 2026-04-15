@@ -107,9 +107,7 @@ Works in all modern browsers with JavaScript enabled:
 
 ```
 think-hindi/
-├── index.html       # Main HTML file
-├── app.js          # Application logic
-├── styles.css      # Dark theme styling
+├── index.html       # Self-contained app (HTML + CSS + JS)
 ├── favicon.svg     # Site icon
 ├── README.md       # This file
 └── .gitignore      # Git ignore rules
@@ -137,14 +135,7 @@ Edit `index.html` to change defaults:
 
 ### Modify Learning Prompt
 
-Edit `app.js`, function `generateLearningPrompt()`:
-
-```javascript
-generateLearningPrompt(words) {
-    const wordList = words.join(', ');
-    return `Your custom prompt here...`;
-}
-```
+Edit `index.html`, find the `renderWords()` method in the `<script>` section and modify the `this.promptText.value` line.
 
 ## Browser Compatibility
 
@@ -164,5 +155,5 @@ This project is open source and available under the MIT License.
 Made with ❤️ for Hindi language learners
 
 **Last Updated**: 2026-04-15
-**Version**: 3.0 (Web-only edition)
+**Version**: 4.0 (Single-file edition)
 **Total Vocabulary**: Up to 30,000 frequency-ordered Hindi words
